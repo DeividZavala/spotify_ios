@@ -48,7 +48,13 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     func callAlamo(url: String) {
-        Alamofire.request(url).responseJSON(completionHandler: {
+        
+        let headers : HTTPHeaders = [
+            "Authorization": " Your spotify token ",
+        ]
+        
+        
+        Alamofire.request(url, headers: headers).responseJSON(completionHandler: {
             response in self.parseData(JSONData: response.data!)
             
         })
@@ -63,7 +69,7 @@ class TableViewController: UITableViewController, UISearchBarDelegate {
                     for i in 0..<items.count{
                         let item = items[i]
                         let name = item["name"] as! String
-                        let previewURl = item["preview_url"] as! String
+                        let previewURl = item["preview_url"] as? String
                         if let album = item["album"] as? JSONStandard{
                             if let images = album["images"] as? [JSONStandard]{
                                 let imageData = images[0]
